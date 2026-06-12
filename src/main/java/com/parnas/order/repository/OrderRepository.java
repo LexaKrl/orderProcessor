@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface OrderRepository extends JpaAttributeConverter<Order, UUID> {
+
 }

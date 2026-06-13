@@ -1,6 +1,5 @@
 package com.parnas.order.dto.request;
 
-import com.parnas.order.model.entity.OrderItem;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

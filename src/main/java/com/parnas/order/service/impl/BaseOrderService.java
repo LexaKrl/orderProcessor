@@ -2,6 +2,7 @@ package com.parnas.order.service.impl;
 
 import com.parnas.order.config.props.ApplicationProperties;
 import com.parnas.order.dto.request.OrderRequest;
+import com.parnas.order.dto.request.OrderUpdateStatusRequest;
 import com.parnas.order.dto.response.OrderResponse;
 import com.parnas.order.exception.order.OrderBadRequestException;
 import com.parnas.order.exception.order.OrderNotFoundException;
@@ -87,5 +88,13 @@ public class BaseOrderService implements OrderService {
                 orderItemsRepository
                         .findByOrder(foundOrder, PageRequest.of(orderItemsPage, orderItemsSize))
         );
+    }
+
+    @Transactional
+    @Override
+    public void updateOrderStatus(UUID id, OrderUpdateStatusRequest updateStatusRequest) {
+        Order foundOrder = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
+        foundOrder.setStatus(updateStatusRequest.status());
+        orderRepository.save(foundOrder);
     }
 }

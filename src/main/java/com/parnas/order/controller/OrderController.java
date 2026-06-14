@@ -35,6 +35,6 @@ public class OrderController implements OrderApi {
 
     @Override
     public void updateOrderStatus(UUID id, OrderUpdateStatusRequest updateStatusRequest) {
-
+        orderService.updateOrderStatus(id, updateStatusRequest);
     }
 }

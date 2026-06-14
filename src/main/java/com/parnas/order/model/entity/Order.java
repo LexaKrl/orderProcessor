@@ -3,12 +3,16 @@ package com.parnas.order.model.entity;
 import com.parnas.order.model.enumuration.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", indexes = {
+        @Index(name = "idx_order_customer_name", columnList = "customer_name"),
+        @Index(name = "idx_order_status", columnList = "status")
+})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,6 +28,7 @@ public class Order {
             nullable = false)
     private String customerName;
 
+    @CreationTimestamp
     @Column(name = "order_date",
             nullable = false)
     private LocalDateTime orderDate;
@@ -31,5 +36,5 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(name = "status",
             nullable = false)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.CREATED;
 }

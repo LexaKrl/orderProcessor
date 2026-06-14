@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-indexes-to-orders-table
+      author: your_name
+      changes:
+        - createIndex:
+            indexName: idx_order_customer_name
+            tableName: orders
+            columns:
+              - column:
+                  name: customer_name
+        - createIndex:
+            indexName: idx_order_status
+            tableName: orders
+            columns:
+              - column:
+                  name: status

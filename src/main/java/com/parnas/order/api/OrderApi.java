@@ -3,6 +3,7 @@ package com.parnas.order.api;
 import com.parnas.order.dto.request.OrderRequest;
 import com.parnas.order.dto.request.OrderUpdateStatusRequest;
 import com.parnas.order.dto.response.OrderResponse;
+import com.parnas.order.model.enumuration.OrderStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -14,11 +15,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Validated
 @Tag(name = "Order", description = "the Order Api")
 @RequestMapping("/api/orders")
 public interface OrderApi {
@@ -55,7 +58,7 @@ public interface OrderApi {
     @ResponseStatus(HttpStatus.OK)
     Page<OrderResponse> getOrders(
         @Parameter(description = "Filter by order status", in = ParameterIn.QUERY)
-        @RequestParam(required = false) String status,
+        @RequestParam(required = false) OrderStatus status,
 
         @Parameter(description = "The number of page (starts with 0)", in = ParameterIn.QUERY)
         @RequestParam(defaultValue = "0") int page,
@@ -89,7 +92,13 @@ public interface OrderApi {
     @ResponseStatus(HttpStatus.OK)
     OrderResponse getOrder(
             @Parameter(description = "The order's UUID", required = true, example = "123e4567-e89b-12d3-a456-426614174000")
-            @PathVariable UUID id
+            @PathVariable UUID id,
+
+            @Parameter(description = "The order's items page number",  in = ParameterIn.QUERY)
+            @RequestParam(defaultValue = "0") int orderItemsPage,
+
+            @Parameter(description = "The order's items page size", in = ParameterIn.QUERY)
+            @RequestParam(defaultValue = "10") int  orderItemsSize
     );
 
     @Operation(summary = "Change the order's status", description = "This operation changes order's status")

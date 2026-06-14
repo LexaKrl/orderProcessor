@@ -11,3 +11,9 @@ spring:
 
 open-api:
   server-url: http://localhost:8080
+
+
+application:
+  default-order-items-page-number: 0
+  default-order-items-page-size: 10
+  default-order-sort-value: customerName

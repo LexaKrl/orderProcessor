@@ -1,5 +1,7 @@
 package com.parnas.order.api;
 
+import com.parnas.order.dto.exception.BaseExceptionMessage;
+import com.parnas.order.dto.exception.ValidationExceptionMessage;
 import com.parnas.order.dto.request.OrderRequest;
 import com.parnas.order.dto.request.OrderUpdateStatusRequest;
 import com.parnas.order.dto.response.OrderResponse;
@@ -34,7 +36,7 @@ public interface OrderApi {
             @ApiResponse(responseCode = "400",
                     description = "Bad Request",
                     content = @Content(mediaType = "application/json",
-                            schema =  @Schema(implementation = ErrorResponse.class))), // todo заменить ErrorResponse на кастомный респонс
+                            schema =  @Schema(implementation = ValidationExceptionMessage.class))),
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -52,7 +54,7 @@ public interface OrderApi {
             @ApiResponse(responseCode = "400",
                     description = "Bad Request",
                     content = @Content(mediaType = "application/json",
-                            schema =  @Schema(implementation = ErrorResponse.class))), // todo заменить ErrorResponse на кастомный респонс)
+                            schema =  @Schema(implementation = ValidationExceptionMessage.class))),
     })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -80,13 +82,12 @@ public interface OrderApi {
             @ApiResponse(responseCode = "400",
                     description = "Bad Request",
                     content = @Content(mediaType = "application/json",
-                            schema =  @Schema(implementation = ErrorResponse.class))), // todo заменить ErrorResponse на кастомный респонс)
-
+                            schema =  @Schema(implementation = ValidationExceptionMessage.class))),
 
             @ApiResponse(responseCode = "404",
                     description = "Not Found",
                     content = @Content(mediaType = "application/json",
-                            schema =  @Schema(implementation = ErrorResponse.class))), // todo заменить ErrorResponse на кастомный респонс)
+                            schema =  @Schema(implementation = BaseExceptionMessage.class))),
     })
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -109,12 +110,12 @@ public interface OrderApi {
             @ApiResponse(responseCode = "400",
                     description = "Bad Request",
                     content = @Content(mediaType = "application/json",
-                            schema =  @Schema(implementation = ErrorResponse.class))), // todo заменить ErrorResponse на кастомный респонс)
+                            schema =  @Schema(implementation = ValidationExceptionMessage.class))),
 
             @ApiResponse(responseCode = "404",
                     description = "Not Found",
                     content = @Content(mediaType = "application/json",
-                            schema =  @Schema(implementation = ErrorResponse.class))), // todo заменить ErrorResponse на кастомный респонс)
+                            schema =  @Schema(implementation = BaseExceptionMessage.class))),
     })
     @PutMapping("/{id}/status")
     @ResponseStatus(HttpStatus.NO_CONTENT)

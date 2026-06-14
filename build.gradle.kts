@@ -9,6 +9,8 @@ version = "0.0.1-SNAPSHOT"
 description = "orderProcessor"
 
 val openApiVersion = project.property("open.api.version") as String
+val mapstructVersion = project.property("mapstruct.version") as String
+val lombokMapstructBindingVersion = project.property("lombok-mapstruct-binding.version") as String
 
 java {
     toolchain {
@@ -25,10 +27,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.liquibase:liquibase-core")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiVersion")
+    implementation("org.mapstruct:mapstruct:${mapstructVersion}")
     implementation("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
+
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:$lombokMapstructBindingVersion")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.amqp:spring-rabbit-test")

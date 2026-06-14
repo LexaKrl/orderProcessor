@@ -1,6 +1,7 @@
 package com.parnas.order.service.impl;
 
 import com.parnas.order.config.props.ApplicationProperties;
+import com.parnas.order.dto.event.OrderCreatedEvent;
 import com.parnas.order.dto.request.OrderRequest;
 import com.parnas.order.dto.request.OrderUpdateStatusRequest;
 import com.parnas.order.dto.response.OrderResponse;
@@ -12,9 +13,11 @@ import com.parnas.order.model.enumuration.OrderStatus;
 import com.parnas.order.repository.OrderItemsRepository;
 import com.parnas.order.repository.OrderRepository;
 import com.parnas.order.service.OrderService;
+import com.parnas.order.utils.RabbitMQConstants;
 import com.parnas.order.utils.SortValidationConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,6 +34,7 @@ public class BaseOrderService implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemsRepository orderItemsRepository;
     private final OrderMapper orderMapper;
+    private final RabbitTemplate rabbitTemplate;
     private final ApplicationProperties applicationProperties;
 
     @Override
@@ -39,6 +43,16 @@ public class BaseOrderService implements OrderService {
         Order retrivedOrder = orderRepository.save(orderMapper.toEntity(orderRequest));
         orderItemsRepository.saveAll(orderMapper.toOrderItemList(orderRequest.items(), retrivedOrder));
         log.info("Saved order with id {}", retrivedOrder.getId());
+
+        rabbitTemplate.convertAndSend(
+                RabbitMQConstants.EXCHANGES.ORDER_EXCHANGE,
+                RabbitMQConstants.QUEUES.ORDER_CREATED_QUEUE,
+                new OrderCreatedEvent(
+                        retrivedOrder.getId(),
+                        retrivedOrder.getCustomerName(),
+                        orderRepository.calculateTotal(retrivedOrder.getCustomerName())
+                )
+        );
     }
 
      /**  Retrieves all orders by OrderStatus and sort with pagination.

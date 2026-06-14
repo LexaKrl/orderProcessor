@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5433/orders
     password: postgres
     username: postgres
     driver-class-name: org.postgresql.Driver
@@ -8,6 +8,13 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  liquibase:
+    enabled: true
 
 open-api:
   server-url: http://localhost:8080

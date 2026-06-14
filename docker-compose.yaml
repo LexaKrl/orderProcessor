@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
@@ -18,15 +20,15 @@ services:
     image: postgres:16-alpine
     container_name: order-postgres
     environment:
-      POSTGRES_DB: order
+      POSTGRES_DB: orders
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d order" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d orders" ]
       interval: 10s
       timeout: 5s
       retries: 5
